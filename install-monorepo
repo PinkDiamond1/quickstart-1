@@ -1,0 +1,13 @@
+# digitalbits-core
+wget -O digitalbits-core.deb https://s3.amazonaws.com/digitalbits.org/releases/digitalbits-core/digitalbits-core-${DIGITALBITS_CORE_VERSION}_amd64.deb
+dpkg -i digitalbits-core.deb
+rm digitalbits-core.deb
+
+# frontier
+wget -O frontier.tar.gz https://github.com/xdbfoundation/go/releases/download/frontier-v${FRONTIER_VERSION}/frontier-v${FRONTIER_VERSION}-linux-amd64.tar.gz
+tar -zxvf frontier.tar.gz
+mv /frontier-v${FRONTIER_VERSION}-linux-amd64/frontier /usr/local/bin
+chmod +x /usr/local/bin/frontier
+rm -rf frontier.tar.gz /frontier-v${FRONTIER_VERSION}-linux-amd64
+
+echo "\nDone installing digitalbits-core and frontier...\n"

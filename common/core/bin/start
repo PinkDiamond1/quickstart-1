@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while ! psql -U digitalbits -c 'select 1' core &> /dev/null ; do
+  echo "Waiting for postgres to be available..."
+  sleep 1
+done
+
+echo "starting core..."
+set -e
+exec /usr/local/bin/digitalbits-core --conf "/opt/digitalbits/core/etc/digitalbits-core.cfg"

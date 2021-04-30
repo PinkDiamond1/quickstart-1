@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# This file is a simple wrapper around frontier that establishes the proper
+# environment variables before executing the actual binary.
+
+source /opt/digitalbits/frontier/etc/frontier.env
+exec /usr/local/bin/frontier $@
