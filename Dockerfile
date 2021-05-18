@@ -21,6 +21,7 @@ RUN wget -O frontier.deb https://dl.cloudsmith.io/public/xdb-foundation/digitalb
 RUN echo "\nDone installing digitalbits-core and frontier...\n"
 
 RUN ["mkdir", "-p", "/opt/digitalbits/frontier"]
+RUN ["mkdir", "-p", "/opt/digitalbits/history-cache"]
 RUN ["touch", "/opt/digitalbits/.docker-ephemeral"]
 
 RUN [ "adduser", \

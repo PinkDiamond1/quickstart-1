@@ -203,10 +203,12 @@ function init_digitalbits_core() {
 	pushd $COREHOME
 
 	run_silent "chown-core" chown digitalbits:digitalbits .
+	run_silent "chown-history" chown digitalbits:digitalbits /opt/digitalbits/history-cache
 	run_silent "finalize-core-config" sed -ri "s/__PGPASS__/$PGPASS/g" etc/digitalbits-core.cfg
 
 	start_postgres
 	run_silent "init-core-db" sudo -u digitalbits digitalbits-core --conf etc/digitalbits-core.cfg new-db
+	run_silent "init-core-hist" sudo -u digitalbits digitalbits-core --conf etc/digitalbits-core.cfg new-hist cache
 
 	touch .quickstart-initialized
 	popd
