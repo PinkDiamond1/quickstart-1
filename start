@@ -61,7 +61,7 @@ function process_args() {
 
 	case "$NETWORK" in
 	testnet)
-    export NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
+    export NETWORK_PASSPHRASE="TestNet Global DigitalBits Network ; December 2020"
     ;;
 	pubnet)
     export NETWORK_PASSPHRASE="LiveNet Global DigitalBits Network ; February 2021"
