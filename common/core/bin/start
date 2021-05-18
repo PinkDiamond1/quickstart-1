@@ -7,4 +7,5 @@ done
 
 echo "starting core..."
 set -e
-exec /usr/local/bin/digitalbits-core --conf "/opt/digitalbits/core/etc/digitalbits-core.cfg"
+echo "before run"
+exec /usr/local/bin/digitalbits-core --conf "/opt/digitalbits/core/etc/digitalbits-core.cfg" run
