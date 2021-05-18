@@ -7,7 +7,7 @@ while ! psql -U digitalbits -c 'select 1' frontier &> /dev/null ; do
   sleep 1
 done
 
-while ! digitalbits-core --conf /opt/digitalbits/core/etc/digitalbits-core.cfg -c info &> /dev/null ; do
+while ! digitalbits-core --conf /opt/digitalbits/core/etc/digitalbits-core.cfg http-command info &> /dev/null ; do
   echo "Waiting for digitalbits-core to be available..."
   sleep 1
 done
