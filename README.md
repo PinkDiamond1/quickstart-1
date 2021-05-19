@@ -34,7 +34,7 @@ Ephermeral mode is provided to support development and testing environments.  Ev
 Starting an ephemeral node is simple, just craft a `docker run` command to launch the appropriate image but *do not mount a volume*.  To craft your docker command, you need the network name you intend to run against and the flags to expose the ports your want available (See the section named "Ports" below to learn about exposing ports).  Thus, launching a testnet node while exposing frontier would be:
 
 ```shell
-$ docker run --rm -it -p "8000:8000" --name digitalbits digitalbits/quickstart --testnet
+$ docker run --rm -it -p "8000:8000" --name digitalbits xdbfoundation/digitalbits-quickstart --testnet
 ```  
 
 As part of launching, an ephemeral mode container will generate a random password for securing the postgresql service and will output it to standard out.  You may use this password (provided you have exposed the postgresql port) to access the running postgresql database (See the section "Accessing Databases" below).
@@ -47,7 +47,7 @@ In comparison to ephemeral mode, persistent mode is more complicated to operate,
 Starting a persistent mode container is the same as the ephemeral mode with one exception:
 
 ```shell
-docker run --rm -it -p "8000:8000" -v "/home/scott/digitalbits:/opt/digitalbits" --name digitalbits digitalbits/quickstart --testnet
+docker run --rm -it -p "8000:8000" -v "/home/scott/digitalbits:/opt/digitalbits" --name digitalbits xdbfoundation/digitalbits-quickstart --testnet
 ```
 
 The `-v` option in the example above tells docker to mount the host directory `/home/scott/digitalbits` into the container at the `/opt/digitalbits` path.  You may customize the host directory to any location you like, simply make sure to use the same value every time you launch the container.  Also note: an absolute directory path is required.  The second portion of the volume mount (`/opt/digitalbits`) should never be changed.  This special directory is checked by the container to see if it is mounted from the host system which is used to see if we should launch in ephemeral or persistent mode.
@@ -161,7 +161,7 @@ Below is a list of various ways you might want to launch the quickstart containe
 
 *Launch an ephemeral pubnet node in the background:*
 ```
-$ docker run -d -p "8000:8000" --name digitalbits digitalbits/quickstart --pubnet
+$ docker run -d -p "8000:8000" --name digitalbits xdbfoundation/digitalbits-quickstart --pubnet
 ```
 
 *Launch an ephemeral testnet node in the foreground, exposing all ports:*
@@ -171,7 +171,7 @@ $ docker run --rm -it \
     -p "11626:11626" \
     -p "11625:11625" \
     --name digitalbits \
-    digitalbits/quickstart --testnet
+    xdbfoundation/digitalbits-quickstart --testnet
 ```
 
 *Setup a new persistent node using the host directory `/str`:*
@@ -179,7 +179,7 @@ $ docker run --rm -it \
 $ docker run -it --rm \
     -v "/str:/opt/digitalbits" \
     --name digitalbits \
-    digitalbits/quickstart --pubnet
+    xdbfoundation/digitalbits-quickstart --pubnet
 ```
 
 *Start a background persistent container for an already initialized host directory:*
@@ -188,7 +188,7 @@ $ docker run -d \
     -v "/str:/opt/digitalbits" \
     -p "8000:8000" \
     --name digitalbits \
-    digitalbits/quickstart --pubnet
+    xdbfoundation/digitalbits-quickstart --pubnet
 ```
 
 ## Troubleshooting
