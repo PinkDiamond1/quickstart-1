@@ -1,24 +1,20 @@
-FROM xdbfoundation/digitalbits-base:latest
+FROM docker.cloudsmith.io/xdb-foundation/digitalbits-core/digitalbits-core:latest
 
-ENV DIGITALBITS_CORE_VERSION 1.0.7-beta.3
-ENV FRONTIER_VERSION 1.0.2
+ENV FRONTIER_VERSION 1.0.63
 
 EXPOSE 5432
 EXPOSE 8000
 EXPOSE 11625
 EXPOSE 11626
 
-RUN apt-get update && apt-get install -y psmisc curl wget git libpq-dev libsqlite3-dev libsasl2-dev postgresql-client postgresql postgresql-contrib sudo vim zlib1g-dev supervisor && apt-get clean 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y psmisc curl wget git libpq-dev \
+    libsqlite3-dev libsasl2-dev postgresql-client postgresql postgresql-contrib \
+    sudo vim zlib1g-dev supervisor && apt-get clean 
 
-# digitalbits-core
-RUN wget -O digitalbits-core.deb https://dl.cloudsmith.io/public/xdb-foundation/digitalbits-core/deb/ubuntu/pool/focal/main/d/di/digitalbits-core_${DIGITALBITS_CORE_VERSION}_amd64.deb \
-  && dpkg -i digitalbits-core.deb && rm digitalbits-core.deb
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/xdb-foundation/digitalbits-frontier/setup.deb.sh' | bash
+RUN apt-get install digitalbits-frontier=${FRONTIER_VERSION}
 
-# frontier
-RUN wget -O frontier.deb https://dl.cloudsmith.io/public/xdb-foundation/digitalbits-frontier/deb/ubuntu/pool/focal/main/d/di/digitalbits-frontier_${FRONTIER_VERSION}_amd64.deb \
-&& dpkg -i frontier.deb && rm frontier.deb
 
-RUN echo "\nDone installing digitalbits-core and frontier...\n"
 
 RUN ["mkdir", "-p", "/opt/digitalbits/frontier"]
 RUN ["mkdir", "-p", "/opt/digitalbits/history-cache"]
@@ -40,5 +36,5 @@ ADD testnet /opt/digitalbits-default/testnet
 
 ADD start /
 RUN ["chmod", "+x", "/start"]
-
+RUN apt-get install rsync -y
 ENTRYPOINT ["/start" ]

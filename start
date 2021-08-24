@@ -7,7 +7,7 @@ export SUPHOME="$DIGITALBITS_HOME/supervisor"
 export COREHOME="$DIGITALBITS_HOME/core"
 export HZHOME="$DIGITALBITS_HOME/frontier"
 
-export PGBIN="/usr/lib/postgresql/9.5/bin"
+export PGBIN="/usr/lib/postgresql/12/bin"
 export PGDATA="$PGHOME/data"
 export PGUSER="digitalbits"
 export PGPORT=5432
