@@ -1,22 +1,23 @@
-FROM digitalbits/base:latest
+FROM docker.digitalbits.io/digitalbits-core/digitalbits-core:latest
 
-ENV DIGITALBITS_CORE_VERSION 1.0.5
-ENV FRONTIER_VERSION 1.0.3
+ENV FRONTIER_VERSION 1.0.63
 
 EXPOSE 5432
 EXPOSE 8000
 EXPOSE 11625
 EXPOSE 11626
 
-ADD dependencies /
-RUN ["chmod", "+x", "dependencies"]
-RUN /dependencies
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y psmisc curl wget git libpq-dev \
+    libsqlite3-dev libsasl2-dev postgresql-client postgresql postgresql-contrib \
+    sudo vim zlib1g-dev supervisor && apt-get clean 
 
-ADD install /
-RUN ["chmod", "+x", "install"]
-RUN /install
+RUN curl -1sLf 'https://archive.digitalbits.io/public/digitalbits-frontier/setup.deb.sh' | bash
+RUN apt-get install digitalbits-frontier=${FRONTIER_VERSION}
 
-RUN ["mkdir", "-p", "/opt/digitalbits"]
+
+
+RUN ["mkdir", "-p", "/opt/digitalbits/frontier"]
+RUN ["mkdir", "-p", "/opt/digitalbits/history-cache"]
 RUN ["touch", "/opt/digitalbits/.docker-ephemeral"]
 
 RUN [ "adduser", \
@@ -34,6 +35,6 @@ ADD testnet /opt/digitalbits-default/testnet
 
 
 ADD start /
-RUN ["chmod", "+x", "start"]
-
-ENTRYPOINT ["/init", "--", "/start" ]
+RUN ["chmod", "+x", "/start"]
+RUN apt-get install rsync -y
+ENTRYPOINT ["/start" ]

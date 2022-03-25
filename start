@@ -7,7 +7,7 @@ export SUPHOME="$DIGITALBITS_HOME/supervisor"
 export COREHOME="$DIGITALBITS_HOME/core"
 export HZHOME="$DIGITALBITS_HOME/frontier"
 
-export PGBIN="/usr/lib/postgresql/9.4/bin"
+export PGBIN="/usr/lib/postgresql/12/bin"
 export PGDATA="$PGHOME/data"
 export PGUSER="digitalbits"
 export PGPORT=5432
@@ -30,9 +30,7 @@ function main() {
 	init_digitalbits_core
 	init_frontier
 	copy_pgpass
-
 	stop_postgres  # this gets started in init_db
-
 	# launch services
 	exec_supervisor
 }
@@ -63,10 +61,10 @@ function process_args() {
 
 	case "$NETWORK" in
 	testnet)
-    export NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
+    export NETWORK_PASSPHRASE="TestNet Global DigitalBits Network ; December 2020"
     ;;
 	pubnet)
-    export NETWORK_PASSPHRASE="Public Global DigitalBits Network ; September 2015"
+    export NETWORK_PASSPHRASE="LiveNet Global DigitalBits Network ; February 2021"
     ;;
 	*)
 		echo "Unknown network: '$NETWORK'" >&2
@@ -205,10 +203,12 @@ function init_digitalbits_core() {
 	pushd $COREHOME
 
 	run_silent "chown-core" chown digitalbits:digitalbits .
+	run_silent "chown-history" chown digitalbits:digitalbits /opt/digitalbits/history-cache
 	run_silent "finalize-core-config" sed -ri "s/__PGPASS__/$PGPASS/g" etc/digitalbits-core.cfg
 
 	start_postgres
-	run_silent "init-core-db" sudo -u digitalbits digitalbits-core --newdb --conf etc/digitalbits-core.cfg
+	run_silent "init-core-db" sudo -u digitalbits digitalbits-core --conf etc/digitalbits-core.cfg new-db
+	run_silent "init-core-hist" sudo -u digitalbits digitalbits-core --conf etc/digitalbits-core.cfg new-hist cache
 
 	touch .quickstart-initialized
 	popd
@@ -288,7 +288,7 @@ function stop_postgres() {
 		return 0
 	fi
 
-	kill $CURRENT_POSTGRES_PID
+	killall postgres
 	# wait for postgres to die
 	while kill -0 "$CURRENT_POSTGRES_PID" &> /dev/null; do
 		sleep 0.5
