@@ -1,4 +1,4 @@
-FROM docker.cloudsmith.io/xdb-foundation/digitalbits-core/digitalbits-core:latest
+FROM docker.digitalbits.io/digitalbits-core/digitalbits-core:latest
 
 ENV FRONTIER_VERSION 1.0.63
 
@@ -11,7 +11,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y psmisc c
     libsqlite3-dev libsasl2-dev postgresql-client postgresql postgresql-contrib \
     sudo vim zlib1g-dev supervisor && apt-get clean 
 
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/xdb-foundation/digitalbits-frontier/setup.deb.sh' | bash
+RUN curl -1sLf 'https://archive.digitalbits.io/public/digitalbits-frontier/setup.deb.sh' | bash
 RUN apt-get install digitalbits-frontier=${FRONTIER_VERSION}
 
 
